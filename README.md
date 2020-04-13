@@ -11,7 +11,7 @@ __Relation-Shape Convolutional Neural Network for Point Cloud Analysis__ [[arXiv
 ## Citation
 
 If our paper is helpful for your research, please consider citing:   
-
+```BibTex
         @inproceedings{liu2019rscnn,   
             author = {Yongcheng Liu and    
                             Bin Fan and    
@@ -22,7 +22,7 @@ If our paper is helpful for your research, please consider citing:
             pages = {8895--8904},  
             year = {2019}   
         }   
-
+```
 ## Usage: Preparation
 
 ### Requirement
@@ -46,13 +46,36 @@ __Shape Classification__
 
 Download and unzip [ModelNet40](https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5_2048.zip) (415M). Replace `$data_root$` in `cfgs/config_*_cls.yaml` with the dataset parent path.
 
+__ShapeNet Part Segmentation__
+
+Download and unzip [ShapeNet Part](https://shapenet.cs.stanford.edu/media/shapenetcore_partanno_segmentation_benchmark_v0_normal.zip) (674M). Replace `$data_root$` in `cfgs/config_*_partseg.yaml` with the dataset path.
+
 ## Usage: Training
 ### Shape Classification
 
     sh train_cls.sh
         
-You can modify `relation_prior` in `cfgs/config_*_cls.yaml`.
+You can modify `relation_prior` in `cfgs/config_*_cls.yaml`. We have trained a Single-Scale-Neighborhood classification model in `cls` folder, whose accuracy is 92.38%.
         
+### Shape Part Segmentation
+
+    sh train_partseg.sh
+        
+We have trained a Multi-Scale-Neighborhood part segmentation model in `seg` folder, whose class mIoU and instance mIoU is 84.18% and 85.81% respectively.
+
+## Usage: Evaluation
+### Shape Classification
+
+    Voting script: voting_evaluate_cls.py
+        
+You can use our model `cls/model_cls_ssn_iter_16218_acc_0.923825.pth` as the checkpoint in `config_ssn_cls.yaml`, and after this voting you will get an accuracy of 92.71% if all things go right.
+
+### Shape Part Segmentation
+
+    Voting script: voting_evaluate_partseg.py
+        
+You can use our model `seg/model_seg_msn_iter_57585_ins_0.858054_cls_0.841787.pth` as the checkpoint in `config_msn_partseg.yaml`.
+
 ## License
 
 The code is released under MIT License (see LICENSE file for details).
